@@ -33,6 +33,8 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
     """
     Post message when Askbot Post is created.  A Post includes Questions, Comments and Answers.
     """
+    import wdb
+    wdb.set_trace()
     if created and askbot_settings.SLACK_ENABLED:
         params = {
             'user': instance.author,
