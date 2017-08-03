@@ -39,8 +39,6 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
             'title': instance.thread.title,
             'url': get_url(instance)
         }
-        if instance.thread:
-            print instance.thread.post_type
         if instance.is_question():
             msg = _('%(user)s asked "%(title)s": %(url)s') % params
         elif instance.is_answer():
