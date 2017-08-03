@@ -43,7 +43,7 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
             msg = _('%(user)s asked "%(title)s": %(url)s') % params
         elif instance.is_answer():
             msg = _('%(user)s answered "%(title)s": %(url)s') % params
-            print instance._question_post().author
+            print instance.thread._question_post().author
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
         post_msg(msg)
