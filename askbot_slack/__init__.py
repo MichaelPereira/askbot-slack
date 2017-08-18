@@ -30,6 +30,9 @@ def post_msg(msg, channel_or_username=askbot_settings.SLACK_CHANNEL):
 
 @receiver(tags_updated, sender=Post)
 def notify_tags_updated(sender, tags, new_tags, user, timestamp, **kwargs):
+    print '##############'
+    print 'TAGS UPDATED'
+    print '##############'
     print tags
     print '##############'
     print new_tags
@@ -41,6 +44,8 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
     """
     Post message when Askbot Post is created.  A Post includes Questions, Comments and Answers.
     """
+    print '##############'
+    print 'POST_CREATED'
     print '##############'
     if created and askbot_settings.SLACK_ENABLED:
         params = {
