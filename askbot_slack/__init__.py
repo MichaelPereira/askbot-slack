@@ -29,13 +29,14 @@ def post_msg(msg, channel_or_username=askbot_settings.SLACK_CHANNEL):
     requests.post(askbot_settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
 
 @receiver(tags_updated, sender=Post)
-def notify_tags_updated(sender, tags, new_tags, user, timestamp, **kwargs):
+def notify_tags_updated(sender, tags, user, timestamp, **kwargs):
+#def notify_tags_updated(sender, tags, new_tags, user, timestamp, **kwargs):
     print '##############'
     print 'TAGS UPDATED'
     print '##############'
     print tags
     print '##############'
-    print new_tags
+    #print new_tags
     print '##############'
     print user
 
