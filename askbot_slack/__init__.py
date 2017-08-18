@@ -41,6 +41,7 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
     """
     Post message when Askbot Post is created.  A Post includes Questions, Comments and Answers.
     """
+    print '##############'
     if created and askbot_settings.SLACK_ENABLED:
         params = {
             'user': instance.author,
