@@ -8,6 +8,7 @@ from django.utils.translation import ugettext as _
 from askbot_slack import conf #register slack settings
 from askbot.conf import settings as askbot_settings
 from askbot.models import Post
+from askbot.signals import tags_updated
 
 
 def get_url(model_instance):
@@ -27,6 +28,13 @@ def post_msg(msg, channel_or_username=askbot_settings.SLACK_CHANNEL):
     }
     requests.post(askbot_settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
 
+@receiver(tags_updated, sender=Post)
+def notify_tags_updated(sender, tags, new_tags, user, timestamp, **kwargs):
+    print tags
+    print '##############'
+    print new_tags
+    print '##############'
+    print user
 
 @receiver(post_save, sender=Post)
 def notify_post_created(sender, instance, created, raw, using, **kwargs):
