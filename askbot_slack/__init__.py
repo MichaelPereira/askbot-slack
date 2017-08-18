@@ -1,4 +1,5 @@
 import json
+import redis
 import requests
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -15,15 +16,14 @@ def get_url(model_instance):
     """
     return "http://%s%s" % (Site.objects.get_current().domain, model_instance.get_absolute_url())
 
-
-def post_msg(msg):
+def post_msg(msg, channel_or_username=askbot_settings.SLACK_CHANNEL):
     """
     Post message to specific slack channel defined in config.
     """
     payload = {
         "text": msg,
         "username": askbot_settings.SLACK_USERNAME,
-        "channel": askbot_settings.SLACK_CHANNEL
+        "channel": channel_or_username
     }
     requests.post(askbot_settings.SLACK_WEBHOOK_URL, data=json.dumps(payload))
 
@@ -43,7 +43,7 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
             msg = _('%(user)s asked "%(title)s": %(url)s') % params
         elif instance.is_answer():
             msg = _('%(user)s answered "%(title)s": %(url)s') % params
-            print instance.thread._question_post().author
+            author_email = instance.thread._question_post().author.email
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
         post_msg(msg)
