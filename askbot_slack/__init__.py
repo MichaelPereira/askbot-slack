@@ -65,12 +65,16 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
                     channel = 'musketeers'
                     break '''
         elif instance.is_answer():
-
-            author = instance.thread._question_post().author
-            print author
-            author_email = author.email
-            print author_email
             msg = _('%(user)s answered "%(title)s": %(url)s') % params
+            author = instance.thread._question_post().author
+            author_email = author.email
+            response = requests.get('https://build-tools.learnvest.net/slackusernames/get_username/{}'.format(author_email))
+            if response.status_code != requests.codes.ok:
+                print 'could not find slack username for email {}'.format(author_email)
+            else:
+                username = response.content
+                post_msg(msg, channel_or_username=username)
+
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
         post_msg(msg=msg, channel_or_username=channel)
