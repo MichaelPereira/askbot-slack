@@ -73,7 +73,7 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
                 print 'could not find slack username for email {}'.format(author_email)
             else:
                 username = response.content
-                post_msg(msg, channel_or_username=username)
+                post_msg(msg + ' | ' + username, channel_or_username='michaelpereira')
 
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
