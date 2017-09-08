@@ -71,9 +71,9 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
             response = requests.get('https://build-tools.learnvest.net/slackusernames/get_username/{}'.format(author_email))
             if response.status_code != requests.codes.ok:
                 print 'could not find slack username for email {}'.format(author_email)
-            else:
-                username = response.content
-                post_msg(msg + ' | ' + username, channel_or_username='michaelpereira')
+            #else:
+            username = response.content
+            post_msg(msg + ' | ' + username, channel_or_username='michaelpereira')
 
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
