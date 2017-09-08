@@ -54,14 +54,26 @@ def notify_post_created(sender, instance, created, raw, using, **kwargs):
             'title': instance.thread.title,
             'url': get_url(instance)
         }
+        channel='#askbot'
         if instance.is_question():
             msg = _('%(user)s asked "%(title)s": %(url)s') % params
+            ''' for tag in self.tagnames:
+                if tag == 'infra':
+                    channel = 'platform-support-ny'
+                    break
+                elif tag == 'devtools':
+                    channel = 'musketeers'
+                    break '''
         elif instance.is_answer():
+
+            author = instance.thread._question_post().author
+            print author
+            author_email = author.email
+            print author_email
             msg = _('%(user)s answered "%(title)s": %(url)s') % params
-            author_email = instance.thread._question_post().author.email
         elif instance.is_comment():
             msg = _('%(user)s commented on "%(title)s": %(url)s') % params
-        post_msg(msg)
+        post_msg(msg=msg, channel_or_username=channel)
 
 
 class SlackMiddleware(object):
